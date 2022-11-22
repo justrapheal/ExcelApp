@@ -7,14 +7,11 @@ using System.Data;
 using System.Diagnostics;
 using System.Text;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using Aspose.Cells;
+
 using ExcelApp.Service;
-using NPOI.Util;
-using DocumentFormat.OpenXml.InkML;
+
 using Microsoft.EntityFrameworkCore;
-using NPOI.SS.Formula.Functions;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
+
 
 
 namespace ExcelApp.Controllers
@@ -126,7 +123,25 @@ namespace ExcelApp.Controllers
 
             _dbContext.Excel.Update(model);
             _dbContext.SaveChanges();
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeleteData(int id)
+        {
+            var model = _dbContext.Excel.FirstOrDefault(n => n.Identity == id);
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult DeleteData(ExcelModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            _dbContext.Excel.Remove(model);
+            _dbContext.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         public void AddData(ExcelModel model)

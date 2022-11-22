@@ -1,8 +1,7 @@
 ﻿using System.Data;
 using System.IO;
 using System.Reflection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace ExcelApp.Service
@@ -44,11 +43,11 @@ namespace ExcelApp.Service
             }
         }
 
-      
-        public List <T> Import<T>(string file)
+
+        public List<T> Import<T>(string file)
         {
             List<T> list = new List<T>();
-            List<string>lines = File.ReadAllLines(file).ToList();
+            List<string> lines = File.ReadAllLines(file).ToList();
             string headerLine = lines[0];
             var headerInfo = headerLine.Split(',').ToList().Select((v, i) => new { ColName = v, ColIndex = i });
 
@@ -69,7 +68,7 @@ namespace ExcelApp.Service
                     var colIndex = headerInfo.SingleOrDefault(s => s.ColName == colName).ColIndex;
                     var value = values[colIndex];
                     var propType = prop.PropertyType;
-                    prop.SetValue(obj,Convert.ChangeType(value,propType));
+                    prop.SetValue(obj, Convert.ChangeType(value, propType));
                 }
                 list.Add(obj);
             });
@@ -101,6 +100,6 @@ namespace ExcelApp.Service
         }
 
 
-         
+
     }
 }

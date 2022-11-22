@@ -13,6 +13,9 @@
             <div class="col-md-3">
 
                 <input type="button" name="Upload" value="Upload" id="btnupload" class="btn btn-primary" />
+                <div class="spinner-border" id="BtnHIdeShow" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
 
             </div>
 
@@ -60,6 +63,7 @@
                         <td>
                             <div class="btn-group btn-group-sm">
                                 <a asp-controller="Home" asp-action="UpdateData" asp-route-id=@item.Identity class="btn btn-primary">Edit</a>
+                                <a asp-controller="Home" asp-action="DeleteData" asp-route-id="@item.Identity" class="btn btn-danger">Delete</a>
                             </div>
                         </td>
                     </tr>
@@ -85,6 +89,8 @@
 <script type="text/javascript">
 
     $(function () {
+        $("#BtnHIdeShow").hide();
+
 
         $('#btnupload').on('click', function () {
 
@@ -113,6 +119,13 @@
                 }
 
             }
+            //<div class="spinner-border" role = "status" >
+            //    <span class="visually-hidden" > Loading...</span>
+            //    < /div>
+            $("#btnupload").hide();
+                    $("#BtnHIdeShow").show();
+
+
 
             var fdata = new FormData();
 
@@ -146,15 +159,21 @@
 
 
                     setTimeout(function () {
-                        alert("File Uploaded Successfully");
+                        alert("File Uploaded Successfully  and saved to Database Successfully");
                         location.reload();
                     }, 5000);
+                    $("#btnupload").show();
+                    $("#BtnHIdeShow").hide();
+
+
 
 
                 },
 
                 error: function (e) {
                     $('#data').html(e.responseText);
+                    $("#btnupload").show();
+                    $("#BtnHIdeShow").hide();
                 }
 
             });
